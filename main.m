@@ -110,12 +110,8 @@ xlabel('Frecventa (Hz)');
 ylabel('Magnitudine');
 xlim([0 fs/2]);
 
-%% Compensarea grosiera a frecventei
-cfc = comm.CoarseFrequencyCompensator('Modulation', 'QAM', 'SampleRate', fs, 'FrequencyResolution', 1);
-compensated_carrier = cfc(carrier_iso.').'; % Aplicarea compensarii grosiere a frecventei
-
-%% Limitarea purtatoarei compensate
-limited_carrier = sign(compensated_carrier); % Limitare binara pentru a izola faza
+%% Limitarea purtatoarei filtrate
+limited_carrier = sign(carrier_iso); % Limitare binara pentru a izola faza
 
 % Asigurarea ca limited_carrier este un vector coloana
 limited_carrier = limited_carrier(:);
@@ -183,4 +179,3 @@ noise_power = mean(abs(recovered_carrier(:) - ideal_carrier(:)).^2);  % Puterea 
 % Calculul SNR in dB
 SNR = 10 * log10(signal_power / noise_power);
 fprintf('SNR-ul Semnalului Recuperat: %.2f dB\n', SNR);
-
